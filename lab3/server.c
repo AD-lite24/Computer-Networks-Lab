@@ -16,7 +16,7 @@ int main() {
         exit(0);
     }
     printf("Server Socket Created\n");
-    
+
     /*CONSTRUCT LOCAL ADDRESS STRUCTURE*/
     struct sockaddr_in serverAddress, clientAddress;
     memset(&serverAddress, 0, sizeof(serverAddress));

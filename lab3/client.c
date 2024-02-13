@@ -25,7 +25,8 @@ int main() {
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(12345); // You can change port number here
     serverAddr.sin_addr.s_addr =
-        inet_addr("A.B.C.D"); // Specify server's IP address here
+        inet_addr("127.0.0.1"); // Specify server's IP address here (Use
+                                // ifconfig command for macos)
     printf("Address assigned\n");
 
     /*ESTABLISH CONNECTION*/
@@ -48,7 +49,7 @@ int main() {
         exit(0);
     }
     printf("Data Sent\n");
-    
+
     /*RECEIVE BYTES*/
     char recvBuffer[BUFSIZE];
     int bytesRecvd = recv(sock, recvBuffer, BUFSIZE - 1, 0);
