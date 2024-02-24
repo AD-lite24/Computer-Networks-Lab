@@ -46,6 +46,8 @@ int main() {
 
     int clientLength = sizeof(clientAddress);
 
+    FILE* fp = fopen("database.txt", "w");
+
     while (1) {
         int newSocket;
         while (1) {

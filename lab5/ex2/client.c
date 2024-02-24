@@ -7,7 +7,7 @@
 #define BUFSIZE 32
 
 int main() {
-    /* CREATE A TCP SOCKET*/
+
     int sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 
     if (sock < 0) {
@@ -17,19 +17,18 @@ int main() {
 
     printf("Client Socket Created\n");
 
-    /*CONSTRUCT SERVER ADDRESS STRUCTURE*/
     struct sockaddr_in serverAddr;
     memset(&serverAddr, 0, sizeof(serverAddr));
-    /*memset() is used to fill a block of memory with a particular value*/
+
 
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(12345); // You can change port number here
+    serverAddr.sin_port = htons(12345); 
     serverAddr.sin_addr.s_addr =
         inet_addr("127.0.0.1"); // Specify server's IP address here (Use
                                 // ifconfig command for macos)
     printf("Address assigned\n");
 
-    /*ESTABLISH CONNECTION*/
+
     int c = connect(sock, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
     printf("%d\n", c);
     if (c < 0) {
@@ -39,7 +38,7 @@ int main() {
 
     printf("Connection Established\n");
 
-    /*SEND DATA*/
+
     while(1) {
         printf("ENTER MESSAGE FOR SERVER with max 32 characters\n");
         char msg[BUFSIZE];
