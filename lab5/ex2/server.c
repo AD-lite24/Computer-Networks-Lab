@@ -23,7 +23,7 @@ int main() {
     memset(&serverAddress, 0, sizeof(serverAddress));
 
     serverAddress.sin_family = AF_INET;
-    serverAddress.sin_port = htons(12342);
+    serverAddress.sin_port = htons(12341);
     serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
 
     printf("Server address assigned\n");
@@ -45,8 +45,6 @@ int main() {
 
     char msg[BUFFERSIZE];
     int clientLength = sizeof(clientAddress);
-
-
 
     while(1) {
         int newSocket;
