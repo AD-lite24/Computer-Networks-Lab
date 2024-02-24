@@ -7,7 +7,7 @@
 #define MAXPENDING 5
 #define BUFFERSIZE 32
 
-// Accepts 3 simultaneous connections 
+
 
 int main() {
 
@@ -61,7 +61,6 @@ int main() {
             if((childpid = fork()) == 0){
                 close(serverSocket); //because the child is not going to accept new connections, it will only handle the ones it needs
                 while(1){
-                    printf("test");
                     int temp = recv(newSocket, msg, 1024, 0);
 
                     if (temp < 0) printf("Problem in recieving data");
