@@ -7,8 +7,6 @@
 #define MAXPENDING 5
 #define BUFFERSIZE 32
 
-
-
 int main() {
 
     /*CREATE A TCP SOCKET*/
@@ -66,7 +64,7 @@ int main() {
                     if (temp < 0) printf("Problem in recieving data");
 
                     if(strcmp(msg, ":exit") == 0){
-                        printf("Disconnected from %s:%d\n",inet_ntoa(clientAddress.sin_addr),
+                        printf("Disconnected from %s:%d\n", inet_ntoa(clientAddress.sin_addr),
                         ntohs(clientAddress.sin_port));
                         break;
                     }

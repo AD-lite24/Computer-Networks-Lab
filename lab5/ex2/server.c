@@ -7,6 +7,46 @@
 #define MAXPENDING 5
 #define BUFFERSIZE 32
 
+void insertIntoDatabase(int key, char *value) {
+
+    FILE *fp = fopen("database.txt", "a");
+
+    if (!fp)
+        printf("Could not open file\n");
+
+    int found = 0;
+    // fseek(fp, 0, SEEK_SET);
+    while (1) {
+        int keyRead;
+        char line[100];
+        printf("Ran\n");
+        if (fscanf(fp, "%d%*[^=]=%[^\n]", &keyRead, line) == EOF) {
+            printf("ended");
+            break;
+        }
+
+        printf("key %d\n", keyRead);
+
+        if (keyRead == key) {
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        fseek(fp, 0, SEEK_END); // Move to end of file for efficient append
+        fprintf(fp, "%d=%s\n", key, value);
+        fflush(fp);
+        printf("Key-value pair inserted successfully.\n");
+    }
+
+    else {
+        printf("Error: Key already exists in the file.\n");
+    }
+
+    fclose(fp);
+}
+
 int main() {
 
     /*CREATE A TCP SOCKET*/
@@ -46,7 +86,6 @@ int main() {
 
     int clientLength = sizeof(clientAddress);
 
-    FILE* fp = fopen("database.txt", "w");
 
     while (1) {
         int newSocket;
@@ -67,11 +106,14 @@ int main() {
                                      // new connections, it will only handle the
                                      // ones it needs
                 while (1) {
-                    printf("test");
                     int temp = recv(newSocket, msg, 1024, 0);
 
+                    char tmpcpy[BUFFERSIZE];
+
+                    strcpy(tmpcpy, msg);
+
                     if (temp < 0)
-                        printf("Problem in recieving data");
+                        printf("Problem in recieving data\n");
 
                     if (strcmp(msg, ":exit") == 0) {
                         printf("Disconnected from %s:%d\n",
@@ -83,8 +125,29 @@ int main() {
                     else {
                         printf("Client %s: %s\n",
                                inet_ntoa(clientAddress.sin_addr), msg);
-                        send(newSocket, msg, strlen(msg), 0);
-                        bzero(msg, sizeof(msg));
+
+                        if (strncmp(tmpcpy, "put", 3) == 0) {
+                            printf("Putting key value\n");
+
+                            char *key, *value;
+                            char *token = strtok(tmpcpy, " ");
+                            key = strtok(NULL, " ");
+                            value = strtok(NULL, " ");
+
+                            insertIntoDatabase(atoi(key), value);
+                        }
+
+                        else if (strncmp(tmpcpy, "get", 3) == 0) {
+                            printf("getting key value\n");
+                        }
+
+                        else if (strncmp(tmpcpy, "del", 3) == 0) {
+                            printf("deleting key value\n");
+                        }
+
+                        else {
+                            printf("Incorrect command\n");
+                        }
                     }
                 }
             }
