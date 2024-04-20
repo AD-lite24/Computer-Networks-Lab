@@ -8,7 +8,6 @@
 #include <unistd.h>
 
 #define BUFLEN 90 // Max length of buffer
-// #define PORT 8882 // The port on which to send data
 #define PACKET_SIZE ;
 
 typedef struct packet {
