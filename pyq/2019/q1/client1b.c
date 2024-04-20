@@ -157,13 +157,13 @@ int main(void) {
             }
 
             if (FD_ISSET(s2, &fdset)) {
-                if (recvfrom(s2, &rcv_ack1, sizeof(rcv_ack0), 0,
+                if (recvfrom(s2, &rcv_ack1, sizeof(rcv_ack1), 0,
                              (struct sockaddr *)&si_other, &slen2) == -1)
                     die("recvfrom()");
 
                 if (rcv_ack1.type == 1) {
                     printf("RCVD ACK: for PKT with Seq.No. %d, CH = %d\n",
-                           rcv_ack0.seq_no, 1);
+                           rcv_ack1.seq_no, 1);
                     acked_channel[1] = 1;
                 }
             }
