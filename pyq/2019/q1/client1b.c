@@ -75,56 +75,12 @@ int main(void) {
 
     int bytes_read;
 
-    // constuct the first packets
-    // if ((bytes_read = fread(buf, 1, BUFLEN, fp)) > 0) {
-    //     send_pkt0.pkt_size = BUFLEN + 10; // total 100 bytes
-    //     send_pkt0.seq_no = sent_byte;
-    //     send_pkt0.type = 0;
-    //     strncpy(send_pkt0.data, buf, bytes_read);
-
-    //     int bytes_sent = send(s1, &send_pkt0, BUFLEN + 10, 0);
-    //     if (bytes_sent != BUFLEN + 10) {
-    //         printf("Error while sending the message");
-    //         exit(0);
-    //     }
-    //     sent_byte += bytes_sent;
-    //     printf("SENT PKT: Seq. No. = %d, Size = %d Bytes, CH=%d\n",
-    //            send_pkt0.seq_no, bytes_sent, 0);
-    // }
-
-    // if (feof(fp)) {
-    //     printf("All packets sent");
-    //     return 1;
-    // }
-
-    // if ((bytes_read = fread(buf, 1, BUFLEN, fp)) > 0) {
-    //     send_pkt1.pkt_size = BUFLEN + 10; // total 100 bytes
-    //     send_pkt1.seq_no = sent_byte;
-    //     send_pkt1.type = 1;
-    //     strncpy(send_pkt1.data, buf, bytes_read);
-
-    //     int bytes_sent = send(s2, &send_pkt1, bytes_read + 10, 0);
-    //     if (bytes_sent != bytes_read + 10) {
-    //         printf("Error while sending the message");
-    //         exit(0);
-    //     }
-    //     sent_byte += bytes_sent;
-    //     printf("SENT PKT: Seq. No. = %d, Size = %d Bytes, CH=%d\n",
-    //            send_pkt1.seq_no, bytes_sent, 1);
-    // }
-
-    // if (feof(fp)) {
-    //     printf("All packets sent");
-    //     return 1;
-    // }
-
     while (1) {
 
         if (acked_channel[0]) { // can send packet across channel 0
             memset(send_pkt0.data, 0, BUFLEN);
             if ((bytes_read = fread(send_pkt0.data, 1, BUFLEN, fp)) > 0) {
                 send_pkt0.seq_no = sent_byte;
-                printf("data: %s\n", send_pkt0.data);
                 send_pkt0.pkt_size = BUFLEN + 10;
 
                 int bytes_sent = send(s1, &send_pkt0, bytes_read + 10, 0);
@@ -181,7 +137,7 @@ int main(void) {
             FD_SET(s1, &fdset);
             FD_SET(s2, &fdset);
 
-            int activity = select(max_sd+1, &fdset, NULL, NULL, NULL);
+            int activity = select(max_sd + 1, &fdset, NULL, NULL, NULL);
 
             if (activity == -1) {
                 perror("select");
@@ -212,7 +168,6 @@ int main(void) {
                 }
             }
         }
-
     }
 
     close(s1);

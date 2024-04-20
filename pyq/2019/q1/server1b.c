@@ -88,7 +88,6 @@ int main(void) {
             if (empty_buffer[j] == 0 &&
                 queue_buffer[j].seq_no == expected_byte) {
                 fputs(queue_buffer[j].data, fp);
-                printf("data: %s\n", queue_buffer[j].data);
                 expected_byte += rcv_pkts[j].pkt_size - 10;
                 fflush(fp);
                 empty_buffer[j] = 1;
@@ -136,7 +135,6 @@ int main(void) {
                         if (rcv_pkts[i].seq_no == expected_byte) {
                             // fputs(rcv_pkts[i].data, fp);
                             fwrite(rcv_pkts[i].data, 1, 90, fp);
-                            printf("data: %s\n", rcv_pkts[i].data);
                             expected_byte += rcv_pkts[i].pkt_size - 10;
                             fflush(fp);
                         }
@@ -151,8 +149,6 @@ int main(void) {
 
                         int temp = send(clientSockets[i], &(send_acks[i]),
                              sizeof(send_acks[i]), 0);
-
-                        printf("temp: %d\n", temp);
 
                         printf("SENT ACK: Seq. No. = %d, CH=%d\n",
                                send_acks[i].seq_no, i);
