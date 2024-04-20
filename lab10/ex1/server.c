@@ -72,6 +72,8 @@ int main(void) {
                 fputs(rcv_pkt.data, fp);
                 fflush(fp);
 
+                if (rcv_pkt.is_last_packet)
+                    printf("This is the last packet\n");
                 ack_pkt.seq_no = 0;
                 ack_pkt.is_data = 0;
 

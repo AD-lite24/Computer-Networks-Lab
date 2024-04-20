@@ -18,7 +18,8 @@ int main() {
     printf("Server Socket Created\n");
 
     /*CONSTRUCT LOCAL ADDRESS STRUCTURE*/
-    struct sockaddr_in serverAddress, clientAddress, clientAddress2, clientAddress3;
+    struct sockaddr_in serverAddress, clientAddress, clientAddress2,
+        clientAddress3;
     memset(&serverAddress, 0, sizeof(serverAddress));
 
     serverAddress.sin_family = AF_INET;
@@ -45,32 +46,40 @@ int main() {
 
     int clientLength = sizeof(clientAddress);
 
-    while(1) {
+    while (1) {
         int newSocket;
-        while(1){
-            newSocket = accept(serverSocket, (struct sockaddr*)&clientAddress, &clientLength);
-            
-            if(newSocket < 0) {
+        while (1) {
+            newSocket = accept(serverSocket, (struct sockaddr *)&clientAddress,
+                               &clientLength);
+
+            if (newSocket < 0) {
                 exit(1);
             }
 
-            printf("Connection accepted from %s:%d\n",inet_ntoa(clientAddress.sin_addr), ntohs(clientAddress.sin_port));
+            printf("Connection accepted from %s:%d\n",
+                   inet_ntoa(clientAddress.sin_addr),
+                   ntohs(clientAddress.sin_port));
             int childpid;
-            if((childpid = fork()) == 0){
-                close(serverSocket); //because the child is not going to accept new connections, it will only handle the ones it needs
-                while(1){
+            if ((childpid = fork()) == 0) {
+                close(serverSocket); // because the child is not going to accept
+                                     // new connections, it will only handle the
+                                     // ones it needs
+                while (1) {
                     int temp = recv(newSocket, msg, 1024, 0);
 
-                    if (temp < 0) printf("Problem in recieving data");
+                    if (temp < 0)
+                        printf("Problem in recieving data");
 
-                    if(strcmp(msg, ":exit") == 0){
-                        printf("Disconnected from %s:%d\n", inet_ntoa(clientAddress.sin_addr),
-                        ntohs(clientAddress.sin_port));
+                    if (strcmp(msg, ":exit") == 0) {
+                        printf("Disconnected from %s:%d\n",
+                               inet_ntoa(clientAddress.sin_addr),
+                               ntohs(clientAddress.sin_port));
                         break;
                     }
 
                     else {
-                        printf("Client %s: %s\n", inet_ntoa(clientAddress.sin_addr), msg);
+                        printf("Client %s: %s\n",
+                               inet_ntoa(clientAddress.sin_addr), msg);
                         send(newSocket, msg, strlen(msg), 0);
                         bzero(msg, sizeof(msg));
                     }
