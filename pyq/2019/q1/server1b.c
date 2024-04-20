@@ -36,7 +36,7 @@ int main(void) {
     }
 
     printf("Server socket created\n");
-    struct sockaddr_in serverAddress, clientAddress, clientAddress2;
+    struct sockaddr_in serverAddress, clientAddress;
     int clientLength = sizeof(clientAddress);
     memset(&serverAddress, 0, sizeof(serverAddress));
 
@@ -133,7 +133,6 @@ int main(void) {
                                "CH=%d\n",
                                rcv_pkts[i].seq_no, rcv_pkts[i].pkt_size, i);
                         if (rcv_pkts[i].seq_no == expected_byte) {
-                            // fputs(rcv_pkts[i].data, fp);
                             fwrite(rcv_pkts[i].data, 1, 90, fp);
                             expected_byte += rcv_pkts[i].pkt_size - 10;
                             fflush(fp);
